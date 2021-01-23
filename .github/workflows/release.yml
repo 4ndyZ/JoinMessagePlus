@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform Checkout
+        uses: actions/checkout@v2
+        
+      - name: Set Env
+        run: echo "VERSION=$(echo ${{ github.ref }} | sed -e "s/^refs.tags.//")" >> $GITHUB_ENV
+        
+      - name: Set up JDK 1.8
+        id: setup_jdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache local Maven repository
+        id: cache_maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: '${{ runner.os }}-m2-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: '${{ runner.os }}-m2'
+
+      - name: Build with Maven
+        id: build_using_maven
+        run: mvn --batch-mode --update-snapshots verify
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+        
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: target/JoinMessagePlus.jar
+          asset_name: JoinMessagePlus-${{ env.VERSION }}.jar
+          asset_content_type: application/java-archive

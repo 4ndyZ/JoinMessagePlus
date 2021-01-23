@@ -1,0 +1,23 @@
+# JoinMessagePlus - Simple Join-Message Plugin
+#
+# BungeeSupport:
+#   Enabled: false/true - Activate this option if you only like to have Bungee Join/Quit-Messages. To use this feature you have to enable BungeeCord in the spigot.yml.
+# AuthMeSupport:
+#   Enabled: false/true - Activate this option if you only like to have Join/Quit-Messages if an user logs in successful using AuthMe.
+# JoinMessage:
+#   Enabled: true/false - Should the Join-Message be enabled.
+#   Message: '&6[&a+&6] %player_name%/%player_displayname%' - Your custom Join-Message.
+# QuitMessage:
+#   Enabled: true/false - Should the Quit-Message be enabled.
+#   Message: '&6[&4-&6] %player_name%/%player_displayname%' - Your custom Quit-Message.
+#
+BungeeSupport:
+  Enabled: false
+AuthMeSupport:
+  Enabled: false
+JoinMessage:
+  Enabled: true
+  Message: '&6[&a+&6] %player_name%'
+QuitMessage:
+  Enabled: true
+  Message: '&6[&4-&6] %player_name%'

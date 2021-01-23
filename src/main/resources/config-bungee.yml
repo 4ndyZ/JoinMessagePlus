@@ -1,0 +1,15 @@
+# JoinMessagePlus - Simple Join-Message Plugin
+#                  
+# GlobalJoinMessage:
+#   Enabled: true - Should the Global-Join-Message be enabled.
+#   Message: '&6[&bGLOBAL&6] [&a+&6] %player_name%/%player_displayname%' - Your custom Global-Join-Message.
+# GlobalQuitMessage:
+#   Enabled: true - Should the Global-Quit-Message be enabled.
+#   Message: '&6[&bGLOBAL&6] [&4-&6] %player_name%/%player_displayname%' - Your custom Global-Quit-Message.
+#              
+GlobalJoinMessage:
+  Enabled: true
+  Message: '&6[&a+&6] &6[&bGLOBAL&6] %player_name%'
+GlobalQuitMessage:
+  Enabled: true
+  Message: '&6[&4-&6]&6 [&bGLOBAL&6] %player_name%'

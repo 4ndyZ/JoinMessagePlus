@@ -1,0 +1,5 @@
+name: JoinMessagePlus
+version: 3.3
+author: AndyCraftz
+website: https://andycraftz.eu
+main: eu.andycraftz.joinmessageplus.bungeecord.JoinMessagePlus
