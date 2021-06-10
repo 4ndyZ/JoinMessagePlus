@@ -11,7 +11,7 @@ import net.md_5.bungee.event.EventHandler;
  *
  * @author AndyCraftz <info@andycraftz.eu>
  * @category Bungee Plugin
- * @version 3.3
+ * @version 3.4
  */
 public class MessagesL implements Listener {
 

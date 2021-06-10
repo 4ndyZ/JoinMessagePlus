@@ -18,7 +18,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
  *
  * @author AndyCraftz <info@andycraftz.eu>
  * @category Bukkit Plugin
- * @version 3.3
+ * @version 3.4
  */
 public class ConfigM {
 

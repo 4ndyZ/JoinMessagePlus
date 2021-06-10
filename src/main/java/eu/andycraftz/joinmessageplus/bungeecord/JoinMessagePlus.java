@@ -11,7 +11,7 @@ import org.bstats.bungeecord.MetricsLite;
  *
  * @author AndyCraftz <info@andycraftz.eu>
  * @category Bungee Plugin
- * @version 3.3
+ * @version 3.4
  */
 public class JoinMessagePlus extends Plugin {
 

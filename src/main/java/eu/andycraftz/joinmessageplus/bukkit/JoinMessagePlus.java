@@ -1,5 +1,7 @@
 package eu.andycraftz.joinmessageplus.bukkit;
 
+import com.earth2me.essentials.Essentials;
+
 import fr.xephi.authme.api.v3.AuthMeApi;
 
 import java.util.logging.Level;
@@ -15,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author AndyCraftz <info@andycraftz.eu>
  * @category Bukkit Plugin
- * @version 3.3
+ * @version 3.4
  */
 public class JoinMessagePlus extends JavaPlugin {
 
@@ -26,6 +28,9 @@ public class JoinMessagePlus extends JavaPlugin {
     // AuthMeAPI
     public boolean authmeapi;
     public AuthMeApi authmeapiinstance;
+    // Essentials
+    public boolean essentialsapi;
+    public Essentials essentialinstance;
     // BungeeCordSupport
     public boolean bungeesupport;
 
@@ -45,6 +50,8 @@ public class JoinMessagePlus extends JavaPlugin {
 	// AuthMeAPI
 	authmeapi = pm.isPluginEnabled("AuthMe") && cfg.getConfig().getBoolean("AuthMeSupport.Enabled");
 	String authme = authmeapi ? " + AuthMe" : "";
+	// Essentials
+	essentialsapi = pm.isPluginEnabled("Essentials");
         // BungeeSupport && Mode
         boolean spigot = false;
 	boolean bungeesupportcfg = cfg.getConfig().getBoolean("BungeeSupport.Enabled");
@@ -66,6 +73,10 @@ public class JoinMessagePlus extends JavaPlugin {
 	// AuhMeSupport
 	if (authmeapi) {
 	    authmeapiinstance = AuthMeApi.getInstance();
+	}
+	// Essentials
+	if (essentialsapi) {
+	    essentialinstance = (Essentials)getServer().getPluginManager().getPlugin("Essentials");
 	}
         // Message
         getLogger().log(Level.INFO, "Plugin by AndyCraftz");

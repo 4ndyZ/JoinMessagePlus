@@ -1,11 +1,15 @@
 package eu.andycraftz.joinmessageplus.bukkit;
 
+import com.earth2me.essentials.User;
+
 import fr.xephi.authme.events.LoginEvent;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -16,7 +20,7 @@ import org.bukkit.plugin.PluginManager;
  *
  * @author AndyCraftz <info@andycraftz.eu>
  * @category Bukkit Plugin
- * @version 3.3
+ * @version 3.4
  */
 public class MessagesL implements Listener {
 
@@ -42,13 +46,22 @@ public class MessagesL implements Listener {
         JoinMessageEnabled = this.plugin.cfg.getConfig().getBoolean("JoinMessage.Enabled");
         QuitMessageEnabled = this.plugin.cfg.getConfig().getBoolean("QuitMessage.Enabled");
 	
+	PluginManager pm = Bukkit.getPluginManager();
 	if (this.plugin.authmeapi) {
-	    PluginManager pm = Bukkit.getPluginManager();
 	    pm.registerEvents(new AuthMeL(), this.plugin);
 	}
     }
+    
+    private void sendMessage(Player p, Player target, String msg) {
+	msg = msg.replace("%player_name%", p.getName()).replace("%player_displayname%", p.getDisplayName());
+	if (plugin.placeholderapi) {
+            msg = PlaceholderAPI.setPlaceholders(p, msg);
+        }
+	Bukkit.getConsoleSender().sendMessage(msg); // Send message also to console
+	target.sendMessage(msg);
+    }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
         if (!plugin.bungeesupport) {
@@ -56,16 +69,25 @@ public class MessagesL implements Listener {
                 if (plugin.authmeapi) {
                     return;
                 }
-                if (plugin.placeholderapi) {
-                    Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(e.getPlayer(), JoinMessage.replace("%player_name%", e.getPlayer().getName()).replace("%player_displayname%", e.getPlayer().getDisplayName())));
-                } else {
-                    Bukkit.broadcastMessage(JoinMessage.replace("%player_name%", e.getPlayer().getName()).replace("%player_displayname%", e.getPlayer().getDisplayName()));
-                }
+		if (plugin.essentialsapi) {
+		    final User user = plugin.essentialinstance.getUser(e.getPlayer());
+		    if (user.isHidden()) {
+			for (Player target : Bukkit.getOnlinePlayers()) {
+			    if (target.hasPermission("essentials.vanish.see")) {
+				sendMessage(e.getPlayer(), target, JoinMessage);
+			    }
+			}
+			return;
+		    }
+		}
+		for (Player target : Bukkit.getOnlinePlayers()) {
+		    sendMessage(e.getPlayer(), target, JoinMessage);
+		}
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onLeave(PlayerQuitEvent e) {
         e.setQuitMessage(null);
         if (!plugin.bungeesupport) {
@@ -75,11 +97,18 @@ public class MessagesL implements Listener {
                         return;
                     }
                 }
-                if (plugin.placeholderapi) {
-                    Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(e.getPlayer(), QuitMessage.replace("%player_name%", e.getPlayer().getName()).replace("%player_displayname%", e.getPlayer().getDisplayName())));
-                } else {
-                    Bukkit.broadcastMessage(QuitMessage.replace("%player_name%", e.getPlayer().getName()).replace("%player_displayname%", e.getPlayer().getDisplayName()));
-                }
+		if (plugin.essentialsapi) {
+		    final User user = plugin.essentialinstance.getUser(e.getPlayer());
+		    if (user.isHidden()) {
+			Bukkit.getOnlinePlayers().stream().filter(target -> (target.hasPermission("essentials.vanish.see"))).forEachOrdered(target -> {
+			    sendMessage(e.getPlayer(), target, QuitMessage);
+			});
+			return;
+		    }
+		}
+		Bukkit.getOnlinePlayers().forEach(target -> {
+		    sendMessage(e.getPlayer(), target, QuitMessage);
+		});
             }
         }
     }
@@ -92,11 +121,18 @@ public class MessagesL implements Listener {
 		    if (!plugin.authmeapi) {
 			return;
 		    }
-		    if (plugin.placeholderapi) {
-			Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(e.getPlayer(), JoinMessage.replace("%player_name%", e.getPlayer().getName()).replace("%player_displayname%", e.getPlayer().getDisplayName())));
-		    } else {
-			Bukkit.broadcastMessage(JoinMessage.replace("%player_name%", e.getPlayer().getName()).replace("%player_displayname%", e.getPlayer().getDisplayName()));
+		    if (plugin.essentialsapi) {
+			final User user = plugin.essentialinstance.getUser(e.getPlayer());
+			if (user.isHidden()) {
+			    Bukkit.getOnlinePlayers().stream().filter(target -> (target.hasPermission("essentials.vanish.see"))).forEachOrdered(target -> {
+				sendMessage(e.getPlayer(), target, JoinMessage);
+			    });
+			    return;
+			}
 		    }
+		    Bukkit.getOnlinePlayers().forEach(target -> {
+			sendMessage(e.getPlayer(), target, JoinMessage);
+		    });
 		}
 	    }
 	}

@@ -7,7 +7,7 @@ import net.md_5.bungee.config.Configuration;
  *
  * @author AndyCraftz <info@andycraftz.eu>
  * @category Bungee Plugin
- * @version 3.3
+ * @version 3.4
  */
 public class Config {
 
