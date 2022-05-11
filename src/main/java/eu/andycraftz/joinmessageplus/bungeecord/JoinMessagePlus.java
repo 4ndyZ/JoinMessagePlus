@@ -5,12 +5,12 @@ import java.util.logging.Level;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
-import org.bstats.bungeecord.MetricsLite;
+import org.bstats.bungeecord.Metrics;
+
 /**
  * JoinMessagePlus - Simple Join-Message Plugin
  *
  * @author AndyCraftz <info@andycraftz.eu>
- * @category Bungee Plugin
  * @version 3.4
  */
 public class JoinMessagePlus extends Plugin {
@@ -24,9 +24,9 @@ public class JoinMessagePlus extends Plugin {
         getLogger().log(Level.INFO, "[#]==========< JoinMessagePlus >==========[#]");
         getLogger().log(Level.INFO, "Version: {0}", getDescription().getVersion());
         getLogger().log(Level.INFO, "Web: https://dev.bukkit.org/bukkit-plugins/join-message-plus/");
-        getLogger().log(Level.INFO, "Plugin by AndyCraftz");
+        getLogger().log(Level.INFO, "Plugin by AndyCrafz");
         // Metrics
-        MetricsLite metrics = new MetricsLite(this, 3041);
+        Metrics metrics = new Metrics(this, 3041);
         // Config
         cfg = new Config(this);
         // Events

@@ -19,7 +19,6 @@ import org.bukkit.plugin.PluginManager;
  * JoinMessagePlus - Simple Join-Message Plugin
  *
  * @author AndyCraftz <info@andycraftz.eu>
- * @category Bukkit Plugin
  * @version 3.4
  */
 public class MessagesL implements Listener {
@@ -33,32 +32,37 @@ public class MessagesL implements Listener {
     private final boolean QuitMessageEnabled;
 
     public MessagesL(JoinMessagePlus plugin) {
+        String QuitMessage1;
         this.plugin = plugin;
 
         if (this.plugin.bungeesupport) {
             JoinMessage = "";
             QuitMessage = "";
         } else {
-            JoinMessage = this.plugin.cfg.getConfig().getString("JoinMessage.Message").replace("&", "§");
-            QuitMessage = this.plugin.cfg.getConfig().getString("QuitMessage.Message").replace("&", "§");
+            String JoinMessageFile = this.plugin.cfg.getConfig().getString("JoinMessage.Message");
+            assert JoinMessageFile != null;
+            JoinMessage = JoinMessageFile.replace("&", "§");
+            String QuitMessageFile = this.plugin.cfg.getConfig().getString("QuitMessage.Message");
+            assert QuitMessageFile != null;
+            QuitMessage = QuitMessageFile.replace("&", "§");
         }
 
         JoinMessageEnabled = this.plugin.cfg.getConfig().getBoolean("JoinMessage.Enabled");
         QuitMessageEnabled = this.plugin.cfg.getConfig().getBoolean("QuitMessage.Enabled");
-	
-	PluginManager pm = Bukkit.getPluginManager();
-	if (this.plugin.authmeapi) {
-	    pm.registerEvents(new AuthMeL(), this.plugin);
-	}
+
+        PluginManager pm = Bukkit.getPluginManager();
+        if (this.plugin.authmeapi) {
+            pm.registerEvents(new AuthMeL(), this.plugin);
+        }
     }
-    
+
     private void sendMessage(Player p, Player target, String msg) {
-	msg = msg.replace("%player_name%", p.getName()).replace("%player_displayname%", p.getDisplayName());
-	if (plugin.placeholderapi) {
+        msg = msg.replace("%player_name%", p.getName()).replace("%player_displayname%", p.getDisplayName());
+        if (plugin.placeholderapi) {
             msg = PlaceholderAPI.setPlaceholders(p, msg);
         }
-	Bukkit.getConsoleSender().sendMessage(msg); // Send message also to console
-	target.sendMessage(msg);
+        Bukkit.getConsoleSender().sendMessage(msg); // Send message also to console
+        target.sendMessage(msg);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -69,20 +73,20 @@ public class MessagesL implements Listener {
                 if (plugin.authmeapi) {
                     return;
                 }
-		if (plugin.essentialsapi) {
-		    final User user = plugin.essentialinstance.getUser(e.getPlayer());
-		    if (user.isHidden()) {
-			for (Player target : Bukkit.getOnlinePlayers()) {
-			    if (target.hasPermission("essentials.vanish.see")) {
-				sendMessage(e.getPlayer(), target, JoinMessage);
-			    }
-			}
-			return;
-		    }
-		}
-		for (Player target : Bukkit.getOnlinePlayers()) {
-		    sendMessage(e.getPlayer(), target, JoinMessage);
-		}
+                if (plugin.essentialsapi) {
+                    final User user = plugin.essentialinstance.getUser(e.getPlayer());
+                    if (user.isHidden()) {
+                        for (Player target : Bukkit.getOnlinePlayers()) {
+                            if (target.hasPermission("essentials.vanish.see")) {
+                                sendMessage(e.getPlayer(), target, JoinMessage);
+                            }
+                        }
+                        return;
+                    }
+                }
+                for (Player target : Bukkit.getOnlinePlayers()) {
+                    sendMessage(e.getPlayer(), target, JoinMessage);
+                }
             }
         }
     }
@@ -97,45 +101,37 @@ public class MessagesL implements Listener {
                         return;
                     }
                 }
-		if (plugin.essentialsapi) {
-		    final User user = plugin.essentialinstance.getUser(e.getPlayer());
-		    if (user.isHidden()) {
-			Bukkit.getOnlinePlayers().stream().filter(target -> (target.hasPermission("essentials.vanish.see"))).forEachOrdered(target -> {
-			    sendMessage(e.getPlayer(), target, QuitMessage);
-			});
-			return;
-		    }
-		}
-		Bukkit.getOnlinePlayers().forEach(target -> {
-		    sendMessage(e.getPlayer(), target, QuitMessage);
-		});
+                if (plugin.essentialsapi) {
+                    final User user = plugin.essentialinstance.getUser(e.getPlayer());
+                    if (user.isHidden()) {
+                        Bukkit.getOnlinePlayers().stream().filter(target -> (target.hasPermission("essentials.vanish.see"))).forEachOrdered(target -> sendMessage(e.getPlayer(), target, QuitMessage));
+                        return;
+                    }
+                }
+                Bukkit.getOnlinePlayers().forEach(target -> sendMessage(e.getPlayer(), target, QuitMessage));
             }
         }
     }
 
     public class AuthMeL implements Listener {
-	@EventHandler
-	public void onLogin(LoginEvent e) {
-	    if (!plugin.bungeesupport) {
-		if (JoinMessageEnabled) {
-		    if (!plugin.authmeapi) {
-			return;
-		    }
-		    if (plugin.essentialsapi) {
-			final User user = plugin.essentialinstance.getUser(e.getPlayer());
-			if (user.isHidden()) {
-			    Bukkit.getOnlinePlayers().stream().filter(target -> (target.hasPermission("essentials.vanish.see"))).forEachOrdered(target -> {
-				sendMessage(e.getPlayer(), target, JoinMessage);
-			    });
-			    return;
-			}
-		    }
-		    Bukkit.getOnlinePlayers().forEach(target -> {
-			sendMessage(e.getPlayer(), target, JoinMessage);
-		    });
-		}
-	    }
-	}
+        @EventHandler
+        public void onLogin(LoginEvent e) {
+            if (!plugin.bungeesupport) {
+                if (JoinMessageEnabled) {
+                    if (!plugin.authmeapi) {
+                        return;
+                    }
+                    if (plugin.essentialsapi) {
+                        final User user = plugin.essentialinstance.getUser(e.getPlayer());
+                        if (user.isHidden()) {
+                            Bukkit.getOnlinePlayers().stream().filter(target -> (target.hasPermission("essentials.vanish.see"))).forEachOrdered(target -> sendMessage(e.getPlayer(), target, JoinMessage));
+                            return;
+                        }
+                    }
+                    Bukkit.getOnlinePlayers().forEach(target -> sendMessage(e.getPlayer(), target, JoinMessage));
+                }
+            }
+        }
     }
 
 }

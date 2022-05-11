@@ -1,8 +1,7 @@
 name: JoinMessagePlus
 version: 3.4
 api-version: 1.13
-authors: [AndyCraftz, MrKinau]
+authors: [ AndyCraftz, MrKinau ]
 website: https://andycraftz.eu
 main: eu.andycraftz.joinmessageplus.bukkit.JoinMessagePlus
-softdepend: [Essentials, PlaceholderAPI, AuthMe]
-commands:
+softdepend: [ Essentials, PlaceholderAPI, AuthMe ]

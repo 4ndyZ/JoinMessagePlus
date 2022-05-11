@@ -6,7 +6,6 @@ import org.bukkit.configuration.file.FileConfiguration;
  * JoinMessagePlus - Simple Join-Message Plugin
  *
  * @author AndyCraftz <info@andycraftz.eu>
- * @category Bukkit Plugin
  * @version 3.4
  */
 public class Config {

@@ -10,7 +10,6 @@ import net.md_5.bungee.event.EventHandler;
  * JoinMessagePlus - Simple Join-Message Plugin
  *
  * @author AndyCraftz <info@andycraftz.eu>
- * @category Bungee Plugin
  * @version 3.4
  */
 public class MessagesL implements Listener {
@@ -26,8 +25,13 @@ public class MessagesL implements Listener {
     public MessagesL(JoinMessagePlus plugin) {
         this.plugin = plugin;
 
-        JoinMessage = this.plugin.cfg.getConfig().getString("GlobalJoinMessage.Message").replace("&", "§");
-        QuitMessage = this.plugin.cfg.getConfig().getString("GlobalQuitMessage.Message").replace("&", "§");
+        String JoinMessageFile = this.plugin.cfg.getConfig().getString("GlobalJoinMessage.Message");
+        assert JoinMessageFile != null;
+        JoinMessage = JoinMessageFile.replace("&", "§");
+
+        String QuitMessageFile = this.plugin.cfg.getConfig().getString("GlobalQuitMessage.Message");
+        assert QuitMessageFile != null;
+        QuitMessage = QuitMessageFile.replace("&", "§");
 
         JoinMessageEnabled = this.plugin.cfg.getConfig().getBoolean("GlobalJoinMessage.Enabled");
         QuitMessageEnabled = this.plugin.cfg.getConfig().getBoolean("GlobalQuitMessage.Enabled");

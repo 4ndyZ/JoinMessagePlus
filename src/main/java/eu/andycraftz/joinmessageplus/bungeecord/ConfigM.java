@@ -3,11 +3,11 @@ package eu.andycraftz.joinmessageplus.bungeecord;
 import com.google.common.io.ByteStreams;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import java.nio.file.Files;
 import java.util.logging.Level;
 
 import net.md_5.bungee.config.Configuration;
@@ -18,7 +18,6 @@ import net.md_5.bungee.config.YamlConfiguration;
  * JoinMessagePlus - Simple Join-Message Plugin
  *
  * @author AndyCraftz <info@andycraftz.eu>
- * @category Bungee Plugin
  * @version 3.4
  */
 public class ConfigM {
@@ -40,7 +39,7 @@ public class ConfigM {
             try {
                 file.createNewFile();
                 InputStream is = plugin.getResourceAsStream(name + "-bungee.yml");
-                OutputStream os = new FileOutputStream(file);
+                OutputStream os = Files.newOutputStream(file.toPath());
                 ByteStreams.copy(is, os);
             } catch (IOException err) {
                 plugin.getLogger().log(Level.WARNING, "Config: {0}", err);
