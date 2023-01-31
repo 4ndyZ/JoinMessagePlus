@@ -6,7 +6,6 @@
 Original by MrKinau.
 
 ## Example
-
 Join-Message:
 
 ![Join-Message](https://i.imgur.com/oRt4ljY.png)
@@ -16,11 +15,9 @@ Leave-Message:
 ![Leave-Message](https://i.imgur.com/ooRjyOS.png)
 
 ## Features
-
 Supports the following plugins [PlaceHolderAPI](https://www.spigotmc.org/wiki/placeholderapi-placeholders/), [AuthMeReloaded](https://dev.bukkit.org/projects/authme-reloaded) and [BungeeCord](https://ci.md-5.net/job/BungeeCord/).
 
 ## Installation
-
 [Download](https://dev.bukkit.org/projects/join-message-plus/files) the lastest version of the plugin and put it in the `plugin` directory of your Bukkit/Spigot or BungeeCord server. Reload or restart your Minecraft server.
 
 ## Configuration
@@ -54,4 +51,4 @@ GlobalQuitMessage:
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-[GPL-3.0](https://github.com/4ndyZ/JoinMessagePlus/blob/master/LICENSE)
+[GPL-3.0](https://github.com/4ndyZ/JoinMessagePlus/blob/main/COPYING)
